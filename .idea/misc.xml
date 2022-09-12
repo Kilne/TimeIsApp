@@ -4,7 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/luca_/AndroidStudioProjects/TimeIsApp/app/src/main/res/drawable/box.xml" value="0.386" />
-        <entry key="..\:/Users/luca_/AndroidStudioProjects/TimeIsApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/luca_/AndroidStudioProjects/TimeIsApp/app/src/main/res/drawable/rounded_box.xml" value="0.386" />
+        <entry key="..\:/Users/luca_/AndroidStudioProjects/TimeIsApp/app/src/main/res/layout/activity_main.xml" value="0.33" />
       </map>
     </option>
   </component>
