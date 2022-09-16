@@ -9,6 +9,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 
+
 const val BACKEND_URL: String = "http://10.0.2.2:5000"
 
 fun buildClient() : HttpClient {
@@ -22,11 +23,12 @@ fun buildClient() : HttpClient {
 }
 
 suspend fun logMeIn(username: String, password: String) {
-    class LoginResponse(val username: String, val password: String)
+
+
     val client =  buildClient()
     val response: HttpResponse = client.post("$BACKEND_URL/mobile/login") {
         contentType(ContentType.Application.Json)
-        setBody(LoginResponse(username, password))
+        setBody()
         }
     client.close()
 
