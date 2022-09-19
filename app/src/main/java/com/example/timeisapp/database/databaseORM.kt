@@ -1,11 +1,10 @@
 package com.example.timeisapp.database
 
+import java.time.LocalDateTime
 import java.util.Date
 
 data class DatabaseORM(
     val username: String,
-    val password: String,
-    val email: String,
     val projectORM: Array<ProjectORM>
 ) {
     override fun equals(other: Any?): Boolean {
@@ -15,8 +14,6 @@ data class DatabaseORM(
         other as DatabaseORM
 
         if (username != other.username) return false
-        if (password != other.password) return false
-        if (email != other.email) return false
         if (!projectORM.contentEquals(other.projectORM)) return false
 
         return true
@@ -24,8 +21,6 @@ data class DatabaseORM(
 
     override fun hashCode(): Int {
         var result = username.hashCode()
-        result = 31 * result + password.hashCode()
-        result = 31 * result + email.hashCode()
         result = 31 * result + projectORM.contentHashCode()
         return result
     }
@@ -33,8 +28,6 @@ data class DatabaseORM(
     fun getUserMap(): Map<String, Any> {
         val userMap = mutableMapOf<String, Any>()
         userMap["username"] = username
-        userMap["password"] = password
-        userMap["email"] = email
         userMap["projectORM"] = projectORM
         return userMap
     }
@@ -44,7 +37,7 @@ data class DatabaseORM(
 data class ProjectORM(
     val p_name: String, val obj: String, val goal: Float,
     val num_steps_total: Int, val num_steps_completed: Int,
-    val single_step_value: Float, val due_date: Date, val time_left: Int, val perc_compl: Float,
+    val single_step_value: Float, val due_date: LocalDateTime, val time_left: Int, val perc_compl: Float,
     val description: String, val p_id: String
 ) {
 

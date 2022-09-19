@@ -4,4 +4,13 @@
     <string name="register_button">Register</string>
     <string name="app_title">TIME IS APP</string>
     <string name="subtitle">Try to save some time</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="register_form">Register Form</string>
+    <string name="login_form">LOG IN</string>
+    <string name="username">Username</string>
+    <string name="send">Send</string>
+    <string name="cancel">Cancel</string>
+
 </resources>
