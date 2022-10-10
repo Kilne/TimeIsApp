@@ -1,7 +1,6 @@
 package com.example.timeisapp.database
-
+import kotlinx.serialization.*
 import java.time.LocalDateTime
-import java.util.Date
 
 data class DatabaseORM(
     val username: String,
@@ -57,3 +56,37 @@ data class ProjectORM(
         )
     }
 }
+
+@Serializable
+data class Database(
+    val id: String,
+    val username: String,
+    val session_id: String,
+    val user_projects: Array<Project>
+): java.io.Serializable {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Database
+
+        if (username != other.username) return false
+        if (!user_projects.contentEquals(other.user_projects)) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = username.hashCode()
+        result = 31 * result + user_projects.contentHashCode()
+        return result
+    }
+}
+
+@Serializable
+data class Project(
+    val p_name: String, val obj: String, val goal: Float,
+    val num_steps_total: Int, val num_steps_completed: Int,
+    val single_step_value: Float, val due_date: String, val time_left: Int, val perc_compl: Float,
+    val description: String, val p_id: String
+) : java.io.Serializable

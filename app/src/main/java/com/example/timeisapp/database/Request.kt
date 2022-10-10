@@ -1,6 +1,6 @@
 package com.example.timeisapp.database
 
-import android.util.Log
+
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -10,13 +10,11 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.DeserializationStrategy
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.*
+import kotlinx.serialization.json.Json
 
 
 const val BACKEND_URL: String = "http://10.0.2.2:5000"
-
+//const val BACKEND_URL: String = "https://tmiapp.herokuapp.com/"
 fun buildClient() : HttpClient {
     return HttpClient(CIO){
         install(UserAgent) {
@@ -35,25 +33,34 @@ fun buildClient() : HttpClient {
 
 }
 
-suspend fun logMeIn(username: String, password: String): Any {
+suspend fun logMeIn(username: String, password: String): Pair<Int, Database> {
 
-    val valueMap = mapOf("username" to username, "password" to password)
-
-    val jsonString = Json.encodeToString(valueMap)
+    @kotlinx.serialization.Serializable
+    data class ClientAuth(val username: String, val password: String)
 
     val client =  buildClient()
     val response: HttpResponse = client.post("$BACKEND_URL/mobile/login") {
         contentType(ContentType.Application.Json)
-        setBody(jsonString)
+        setBody(ClientAuth(username, password))
         }
     client.close()
-    val json : Map<String, JsonElement> = Json.parseToJsonElement(response.body()).jsonObject
-    // TODO(Continuare la de serializazzione)
-    Log.d("Response", json["projects"]?.jsonObject.toString())
-    return if (response.status == HttpStatusCode.OK) {
-        Json.parseToJsonElement(response.body()).jsonObject
-    } else {
-        response.status.value
+    val user = response.body<Database>()
+    return (response.status.value to user)
+
+}
+
+suspend fun registerMe(username: String, password:String,email: String): Pair<Int, Database> {
+
+    @kotlinx.serialization.Serializable
+    data class ClientAuth(val username: String, val password: String, val email: String)
+
+    val client =  buildClient()
+    val response: HttpResponse = client.post("$BACKEND_URL/mobile/register") {
+        contentType(ContentType.Application.Json)
+        setBody(ClientAuth(username, password, email))
     }
+    client.close()
+    val user = response.body<Database>()
+    return (response.status.value to user)
 
 }
