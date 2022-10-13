@@ -54,8 +54,7 @@ class RegisterActivity : AppCompatActivity() {
                         )
                         when (responseCode) {
                             200 -> setResult(RESULT_OK, Intent().putExtra("userData", responseData))
-                            401 -> Snackbar.make(it, "Username or email already in use", Snackbar.LENGTH_SHORT).show()
-                            400 -> Snackbar.make(it, "Connection error", Snackbar.LENGTH_SHORT).show()
+                            400,401,500 -> Snackbar.make(it, "There was a problem try again later", Snackbar.LENGTH_SHORT).show()
                         }
                         if (responseCode == 200) {
                             registered = true

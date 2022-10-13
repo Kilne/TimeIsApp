@@ -9,6 +9,11 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.timeisapp.database.Database
+import com.example.timeisapp.database.buildClient
+import com.example.timeisapp.database.isAlive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
@@ -26,12 +31,24 @@ class MainActivity : AppCompatActivity() {
             Log.d("Files", "FileName:" + file.name)
             file.delete()
         }
-       /* userDetails = if (this.fileList().isNotEmpty()){
+       userDetails = if (this.fileList().isNotEmpty()){
              Json.decodeFromString<Database>(this.fileList()[0])
-            // TODO c'è qualche altro file da bruciare
         } else {
             null
-        }*/
+        }
+        if (userDetails != null){
+            var ready = false
+            runBlocking {
+                launch {
+                    if (isAlive(buildClient())){
+                        ready = true
+                    }
+                }.join()
+            }
+            if (ready){
+
+            }
+        }
         val loginButton = findViewById<Button>(R.id.Login_button)
         val registerButton = findViewById<Button>(R.id.Register_button)
         val logInContract =
@@ -62,10 +79,9 @@ class MainActivity : AppCompatActivity() {
                         // TODO Lanciare la nuova activity
 
                     }
-                } else {
-                    Toast.makeText(this@MainActivity, "Login Failed with code" +
-                            " ${data?.getIntExtra("error", 0)}",
-                        Toast.LENGTH_SHORT).show()
+                } else{
+                    Toast.makeText(this@MainActivity,
+                        "Login failed", Toast.LENGTH_SHORT).show()
                 }
             }
         val registerContract =
@@ -89,8 +105,7 @@ class MainActivity : AppCompatActivity() {
                         // TODO Lanciare la nuova activity
                     }
                 } else {
-                    Toast.makeText(this@MainActivity, "Registration Failed with code" +
-                            " ${data?.getIntExtra("error", 0)}",
+                    Toast.makeText(this@MainActivity, "Registration aborted",
                         Toast.LENGTH_SHORT).show()
                 }
 
