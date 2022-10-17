@@ -31,82 +31,97 @@ class MainActivity : AppCompatActivity() {
             Log.d("Files", "FileName:" + file.name)
             file.delete()
         }
-       userDetails = if (this.fileList().isNotEmpty()){
-             Json.decodeFromString<Database>(this.fileList()[0])
+        userDetails = if (this.fileList().isNotEmpty()) {
+            Json.decodeFromString<Database>(this.fileList()[0])
         } else {
             null
         }
-        if (userDetails != null){
+        if (userDetails != null) {
             var ready = false
             runBlocking {
                 launch {
-                    if (isAlive(buildClient())){
+                    if (isAlive(buildClient())) {
                         ready = true
                     }
                 }.join()
             }
-            if (ready){
-
+            if (ready) {
+                // TODO Start HomeActivity
             }
         }
         val loginButton = findViewById<Button>(R.id.Login_button)
         val registerButton = findViewById<Button>(R.id.Register_button)
+        val debugButton = findViewById<Button>(R.id.debug)
         val logInContract =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
                 val data: Intent? = result.data
                 if (result.resultCode == RESULT_OK) {
 
-                    loginButton.isEnabled = false
-                    registerButton.isEnabled = false
+                    loginButton.isClickable = false
+                    registerButton.isClickable = false
+                    loginButton.alpha = 0.5f
+                    registerButton.alpha = 0.5f
 
-                    if (data?.hasExtra("userData") == true){
+                    if (data?.hasExtra("userData") == true) {
 
-                        Toast.makeText(this@MainActivity,
-                            "Login successful", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@MainActivity, "Login successful", Toast.LENGTH_SHORT
+                        ).show()
                         userDetails = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            data.getSerializableExtra("userData",
-                                Serializable::class.java) as Database
+                            data.getSerializableExtra(
+                                "userData", Serializable::class.java
+                            ) as Database
                         } else {
                             data.getSerializableExtra("userData") as Database
                         }
 
                         File(this.filesDir, "userDetails.txt").writeText(
-                            Json.encodeToString(userDetails))
+                            Json.encodeToString(userDetails)
+                        )
 
-                        Toast.makeText(this@MainActivity,
-                            "Welcome ${userDetails!!.username}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Welcome ${userDetails!!.username}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         // TODO Lanciare la nuova activity
 
                     }
-                } else{
-                    Toast.makeText(this@MainActivity,
-                        "Login failed", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(
+                        this@MainActivity, "Login failed", Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         val registerContract =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-                result ->
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
                 val data: Intent? = result.data
 
                 if (result.resultCode == RESULT_OK) {
-                    if (data?.hasExtra("userData") == true){
+                    if (data?.hasExtra("userData") == true) {
                         userDetails = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            data.getSerializableExtra("userData",
-                                Serializable::class.java) as Database
+                            data.getSerializableExtra(
+                                "userData", Serializable::class.java
+                            ) as Database
                         } else {
                             data.getSerializableExtra("userData") as Database
                         }
                         File(this.filesDir, "userDetails.txt").writeText(
-                            Json.encodeToString(userDetails))
-                        Toast.makeText(this@MainActivity,
-                            "Welcome ${userDetails!!.username}", Toast.LENGTH_SHORT).show()
+                            Json.encodeToString(userDetails)
+                        )
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Welcome ${userDetails!!.username}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         // TODO Lanciare la nuova activity
                     }
                 } else {
-                    Toast.makeText(this@MainActivity, "Registration aborted",
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@MainActivity, "Registration aborted", Toast.LENGTH_SHORT
+                    ).show()
                 }
 
             }
@@ -119,6 +134,13 @@ class MainActivity : AppCompatActivity() {
         registerButton.setOnClickListener {
             registerContract.launch(Intent(this@MainActivity, RegisterActivity::class.java))
         }
+
+        debugButton.setOnClickListener {
+            val intent = Intent(this@MainActivity, HomeActivity::class.java)
+            intent.putExtra("userData", userDetails)
+            startActivity(intent)
+        }
+
     }
 
 }

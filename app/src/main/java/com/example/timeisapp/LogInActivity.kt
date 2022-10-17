@@ -21,7 +21,7 @@ class LogInActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.register_send_button).setOnClickListener {
-            var isResponseOk: Boolean = false
+            var isResponseOk = false
             runBlocking {
                 launch {
                     val (responseCode,responseData) = logMeIn(

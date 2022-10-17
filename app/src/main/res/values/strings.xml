@@ -21,4 +21,6 @@
     <string name="open">Open</string>
     <string name="delete">Delete</string>
     <string name="No_projects">No projects found…</string>
+    <string name="project_list_speakable">Project List</string>
+    <string name="select_button">select</string>
 </resources>

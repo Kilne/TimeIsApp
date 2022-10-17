@@ -43,7 +43,7 @@ suspend fun isAlive(client: HttpClient): Boolean {
     return true
 }
 
-suspend fun logMeIn(username: String, password: String): Pair<Int, Database?> {
+suspend fun logMeIn(username: String, password: String): Pair<Int, String> {
 
     @kotlinx.serialization.Serializable
     data class ClientAuth(val username: String, val password: String)
@@ -57,17 +57,17 @@ suspend fun logMeIn(username: String, password: String): Pair<Int, Database?> {
         }
         client.close()
 
-        val user = response.body<Database>()
+        val user = response.body<String>()
         (response.status.value to user)
     } else {
         client.close()
-        (500 to null)
+        (500 to "Server is down")
     }
 
 
 }
 
-suspend fun registerMe(username: String, password: String, email: String): Pair<Int, Database?> {
+suspend fun registerMe(username: String, password: String, email: String): Pair<Int, String> {
 
     @kotlinx.serialization.Serializable
     data class ClientAuth(val username: String, val password: String, val email: String)
@@ -80,11 +80,11 @@ suspend fun registerMe(username: String, password: String, email: String): Pair<
             setBody(ClientAuth(username, password, email))
         }
         client.close()
-        val user = response.body<Database>()
+        val user = response.body<String>()
         (response.status.value to user)
     }else{
         client.close()
-        (500 to null)
+        (500 to "Server is down")
     }
 
 
