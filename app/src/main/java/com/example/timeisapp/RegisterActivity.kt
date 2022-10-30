@@ -5,7 +5,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import com.example.timeisapp.database.registerMe
+import com.example.timeisapp.backend.client1
+import com.example.timeisapp.backend.registerMe
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -50,7 +51,8 @@ class RegisterActivity : AppCompatActivity() {
                         val (responseCode, responseData) = registerMe(
                             username = usernameField.text.toString(),
                             password = passwordField.text.toString(),
-                            email = emailField.text.toString()
+                            email = emailField.text.toString(),
+                            client = client1
                         )
                         when (responseCode) {
                             200 -> setResult(RESULT_OK, Intent().putExtra("userData", responseData))

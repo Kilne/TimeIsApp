@@ -23,4 +23,22 @@
     <string name="No_projects">No projects found…</string>
     <string name="project_list_speakable">Project List</string>
     <string name="select_button">select</string>
+    <string name="confirm">Confirm</string>
+    <string name="p_name">Project Name</string>
+    <string name="p_description">Project Description</string>
+    <string name="p_end_date">End Date Year / Month / Date</string>
+    <string name="p_objective_text">Objective </string>
+    <string name="p_objective_quantity">Objective quantity</string>
+    <string name="p_step_number_tot">Steps total</string>
+    <string name="p_step_completed">Step completed</string>
+    <string name="p_step_value">Step value</string>
+    <string name="p_time_left">Days Remaining</string>
+    <string name="project_form">Project Form</string>
+    <string name="place_holder">PROJECT NAME PLACE HOLDER</string>
+    <string name="add_step">Add Step</string>
+    <string name="remove_step">Remove Step</string>
+    <string name="back_to_home">Back To Projects</string>
+    <string name="project_details">Project Details</string>
+    <string name="modify_project">Modify Project</string>
+    <string name="progress_bar_details">Progress:</string>
 </resources>
