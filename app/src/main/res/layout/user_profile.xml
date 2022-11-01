@@ -55,6 +55,7 @@
                 android:ems="10"
                 android:hint="@string/username"
                 android:inputType="textShortMessage"
+                android:textColor="@color/black"
                 android:textColorHint="@color/black" />
 
             <Button
@@ -63,7 +64,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:backgroundTint="@color/black"
-                android:text="@string/change_user" />
+                android:text="@string/change_user"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
@@ -86,6 +88,7 @@
                 android:ems="10"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
+                android:textColor="@color/black"
                 android:textColorHint="@color/black" />
 
             <Button
@@ -94,7 +97,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:backgroundTint="@color/black"
-                android:text="@string/change_email" />
+                android:text="@string/change_email"
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -116,6 +120,7 @@
                 android:ems="10"
                 android:hint="@string/password"
                 android:inputType="textPassword"
+                android:textColor="@color/black"
                 android:textColorHint="@color/black" />
 
             <Button
@@ -124,7 +129,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:backgroundTint="@color/black"
-                android:text="@string/change_password" />
+                android:text="@string/change_password"
+                android:textColor="@color/white" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -148,6 +154,7 @@
             android:backgroundTint="@color/black"
             android:hint="@string/back_to_home"
             android:text="@string/back_to_home"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -175,6 +182,7 @@
             android:layout_marginEnd="8dp"
             android:backgroundTint="@color/black"
             android:text="@string/apply_changes"
+            android:textColor="@color/white"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/discard_changes_button"
@@ -189,6 +197,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/black"
             android:text="@string/discard_changes"
+            android:textColor="@color/white"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/apply_changes_button"
             app:layout_constraintEnd_toEndOf="parent"

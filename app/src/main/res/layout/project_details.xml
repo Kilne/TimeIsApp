@@ -44,6 +44,7 @@
             android:layout_marginEnd="8dp"
             android:backgroundTint="@color/black"
             android:text="@string/modify_project"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/confirm_changes_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -73,6 +74,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/holo_red_dark"
             android:text="@string/cancel"
+            android:textColor="@color/white"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -102,10 +104,10 @@
             android:contentDescription="@string/project_details"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.666"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5">
+            app:layout_constraintVertical_bias="1.0">
 
             <LinearLayout
                 android:id="@+id/field_linear_layout"
@@ -120,10 +122,12 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:autofillHints=""
+                    android:backgroundTint="@color/black"
                     android:ems="10"
                     android:enabled="false"
                     android:hint="@string/p_name"
                     android:inputType="textPersonName"
+                    android:textColor="@color/black"
                     android:textColorHint="#78909C"
                     tools:ignore="TouchTargetSizeCheck" />
 
@@ -135,11 +139,13 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:autofillHints=""
-                    android:enabled="false"
+                    android:backgroundTint="@color/black"
                     android:ems="10"
+                    android:enabled="false"
                     android:hint="@string/p_objective_text"
                     android:inputType="textPersonName"
                     android:minHeight="48dp"
+                    android:textColor="@color/black"
                     android:textColorHint="#78909C" />
 
                 <EditText
@@ -150,11 +156,13 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:autofillHints="@string/p_description"
-                    android:enabled="false"
+                    android:backgroundTint="@color/black"
                     android:ems="10"
+                    android:enabled="false"
                     android:hint="@string/p_description"
                     android:inputType="textPersonName"
                     android:minHeight="48dp"
+                    android:textColor="@color/black"
                     android:textColorHint="#78909C" />
 
                 <EditText
@@ -165,11 +173,13 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:autofillHints="@string/p_objective_quantity"
-                    android:enabled="false"
+                    android:backgroundTint="@color/black"
                     android:ems="10"
+                    android:enabled="false"
                     android:hint="@string/p_objective_quantity"
                     android:inputType="number"
                     android:minHeight="48dp"
+                    android:textColor="@color/black"
                     android:textColorHint="#78909C" />
 
                 <EditText
@@ -180,11 +190,13 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:autofillHints="@string/p_step_number_tot"
-                    android:enabled="false"
+                    android:backgroundTint="@color/black"
                     android:ems="10"
+                    android:enabled="false"
                     android:hint="@string/p_step_number_tot"
                     android:inputType="number"
                     android:minHeight="48dp"
+                    android:textColor="@color/black"
                     android:textColorHint="#78909C" />
 
                 <EditText
@@ -195,11 +207,13 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:autofillHints="@string/p_step_completed"
-                    android:enabled="false"
+                    android:backgroundTint="@color/black"
                     android:ems="10"
+                    android:enabled="false"
                     android:hint="@string/p_step_completed"
                     android:inputType="number"
                     android:minHeight="48dp"
+                    android:textColor="@color/black"
                     android:textColorHint="#78909C" />
 
                 <EditText
@@ -210,11 +224,13 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:autofillHints="@string/p_step_value"
-                    android:enabled="false"
+                    android:backgroundTint="@color/black"
                     android:ems="10"
+                    android:enabled="false"
                     android:hint="@string/p_step_value"
                     android:inputType="numberDecimal"
                     android:minHeight="48dp"
+                    android:textColor="@color/black"
                     android:textColorHint="#78909C" />
 
                 <EditText
@@ -225,11 +241,13 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:autofillHints="@string/p_end_date"
-                    android:enabled="false"
+                    android:backgroundTint="@color/black"
                     android:ems="10"
+                    android:enabled="false"
                     android:hint="@string/p_end_date"
                     android:inputType="date"
                     android:minHeight="48dp"
+                    android:textColor="@color/black"
                     android:textColorHint="#78909C" />
 
                 <EditText
@@ -240,11 +258,13 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:autofillHints="@string/p_time_left"
-                    android:enabled="false"
+                    android:backgroundTint="@color/black"
                     android:ems="10"
+                    android:enabled="false"
                     android:hint="@string/p_time_left"
                     android:inputType="number"
                     android:minHeight="48dp"
+                    android:textColor="@color/black"
                     android:textColorHint="#78909C" />
 
                 <TextView
@@ -280,6 +300,7 @@
                     android:max="100"
                     android:min="0"
                     android:progress="0"
+                    android:progressBackgroundTintMode="src_in"
                     android:progressTint="@color/black" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -298,6 +319,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/black"
                         android:text="@string/add_step"
+                        android:textColor="@color/white"
                         android:visibility="invisible"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/remove_step"
@@ -312,6 +334,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/black"
                         android:text="@string/remove_step"
+                        android:textColor="@color/white"
                         android:visibility="invisible"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -345,6 +368,7 @@
             android:layout_marginEnd="8dp"
             android:backgroundTint="@color/black"
             android:text="@string/back_to_home"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

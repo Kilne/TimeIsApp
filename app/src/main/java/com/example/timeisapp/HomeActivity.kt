@@ -3,6 +3,7 @@ package com.example.timeisapp
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
@@ -281,12 +282,18 @@ class HomeActivity : AppCompatActivity() {
     private fun addEmptyCard() {
         val cardZone = findViewById<LinearLayout>(R.id.CardZone)
         val card = LayoutInflater.from(this).inflate(
-            R.layout.card_element,
+            R.layout.empty_card,
             cardZone,
             false
-        ) as ConstraintLayout
+        )
 
-        (card.layoutParams as ConstraintLayout.LayoutParams).topToTop = PARENT_ID
+        (card.layoutParams as LinearLayout.LayoutParams).apply {
+            gravity = Gravity.CENTER_HORIZONTAL
+            width = LinearLayout.LayoutParams.MATCH_PARENT
+            height = LinearLayout.LayoutParams.WRAP_CONTENT
+            setMargins(8, 8, 8, 0)
+        }
+
         cardZone.addView(card)
 
     }
