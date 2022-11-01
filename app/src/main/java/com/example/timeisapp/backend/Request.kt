@@ -16,8 +16,8 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 // Constants and global variables
-const val BACKEND_URL: String = "http://10.0.2.2:5000"
-//const val BACKEND_URL: String = "http://192.168.178.20:5000"
+//const val BACKEND_URL: String = "http://10.0.2.2:5000"
+const val BACKEND_URL: String = "https://tmiapp.herokuapp.com/"
 
 // Client class
 class MyClient {
