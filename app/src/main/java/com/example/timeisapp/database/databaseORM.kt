@@ -1,14 +1,14 @@
 package com.example.timeisapp.database
-import kotlinx.serialization.*
-import java.time.LocalDateTime
+
+import kotlinx.serialization.Serializable
 
 @Serializable
 data class Database(
     val id: String,
-    val username: String,
+    var username: String,
     val session_id: String,
     val user_projects: ArrayList<Project>
-): java.io.Serializable {
+) : java.io.Serializable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -34,10 +34,17 @@ data class Database(
 
 @Serializable
 data class Project(
-    var p_name: String, var obj: String, var goal: Float,
-    var num_steps_total: Int, var num_steps_completed: Int,
-    var single_step_value: Float, var due_date: String, var time_left: Int, var perc_compl: Float,
-    var description: String, val p_id: String
+    var p_name: String,
+    var obj: String,
+    var goal: Float,
+    var num_steps_total: Int,
+    var num_steps_completed: Int,
+    var single_step_value: Float,
+    var due_date: String,
+    var time_left: Int,
+    var perc_compl: Float,
+    var description: String,
+    val p_id: String
 ) : java.io.Serializable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

@@ -68,8 +68,9 @@ class MainActivity : AppCompatActivity() {
                                 ) as String
                             ) as Database
                         } else {
-                            Json.decodeFromString(data.getSerializableExtra("userData")
-                                    as String) as Database
+                            Json.decodeFromString(
+                                data.getSerializableExtra("userData") as String
+                            ) as Database
                         }
 
                         Toast.makeText(
@@ -78,7 +79,12 @@ class MainActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        homeContract.launch(Intent(this@MainActivity, HomeActivity::class.java).putExtra("userData", userDetails))
+                        homeContract.launch(
+                            Intent(
+                                this@MainActivity,
+                                HomeActivity::class.java
+                            ).putExtra("userData", userDetails)
+                        )
 
                     }
                 } else {
@@ -110,7 +116,12 @@ class MainActivity : AppCompatActivity() {
                             "Welcome ${userDetails!!.username}",
                             Toast.LENGTH_SHORT
                         ).show()
-                        homeContract.launch(Intent(this@MainActivity, HomeActivity::class.java).putExtra("userData", userDetails))
+                        homeContract.launch(
+                            Intent(
+                                this@MainActivity,
+                                HomeActivity::class.java
+                            ).putExtra("userData", userDetails)
+                        )
                     }
                 } else {
                     Toast.makeText(

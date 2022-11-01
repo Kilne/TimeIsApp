@@ -41,56 +41,78 @@ class HomeActivity : AppCompatActivity() {
         } as Database
 
         // Project creation/modify contract
-        val modifyContract = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-            if (it.resultCode == RESULT_OK){
-                val data: Project = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-                    it.data?.getSerializableExtra("projectData", Project::class.java) as Project
-                }else{
-                    it.data?.getSerializableExtra("projectData") as Project
+        val modifyContract =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if (it.resultCode == RESULT_OK) {
+                    val data: Project = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        it.data?.getSerializableExtra("projectData", Project::class.java) as Project
+                    } else {
+                        it.data?.getSerializableExtra("projectData") as Project
+                    }
+                    for (project in userData.user_projects) {
+                        if (project.p_id == data.p_id) {
+                            project.p_name = data.p_name
+                            project.description = data.description
+                            project.due_date = data.due_date
+                            project.goal = data.goal
+                            project.single_step_value = data.single_step_value
+                            project.perc_compl = data.perc_compl
+                            project.num_steps_completed = data.num_steps_completed
+                            project.obj = data.obj
+                            project.time_left = data.time_left
+                            project.num_steps_total = data.num_steps_total
+                        }
+                    }
+                    for (child in findViewById<LinearLayout>(R.id.CardZone).children.toSet()) {
+                        if (child.findViewById<CheckBox>(R.id.checkBox).tag == data.p_id) {
+                            child.findViewById<ProgressBar>(R.id.PbarHorizontal).progress =
+                                data.perc_compl.toInt()
+                            child.findViewById<TextView>(R.id.CardText).text = data.p_name
+                        }
+                    }
+                    Toast.makeText(this, "Project modified", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Project not modified", Toast.LENGTH_SHORT).show()
                 }
-                for (project in userData.user_projects){
-                    if (project.p_id == data.p_id){
-                        project.p_name = data.p_name
-                        project.description = data.description
-                        project.due_date = data.due_date
-                        project.goal = data.goal
-                        project.single_step_value = data.single_step_value
-                        project.perc_compl = data.perc_compl
-                        project.num_steps_completed = data.num_steps_completed
-                        project.obj = data.obj
-                        project.time_left = data.time_left
-                        project.num_steps_total = data.num_steps_total
+            }
+        val createContract =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+
+                if (result.resultCode == RESULT_OK) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        userData.user_projects.add(
+                            result.data?.getSerializableExtra(
+                                "newProject",
+                                Project::class.java
+                            ) as Project
+                        )
+                    } else {
+                        userData.user_projects.add(result.data?.getSerializableExtra("newProject") as Project)
+                    }
+
+                    if (!addNewProject(userData.user_projects.last(), userData.session_id)) {
+                        userData.user_projects.removeLast()
+                    }
+                    addCards(userData.user_projects.last(), modifyContract, userData.session_id)
+
+                } else {
+                    Toast.makeText(this, "Project creation cancelled", Toast.LENGTH_SHORT).show()
+                }
+            }
+        val profileContract =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if (it.resultCode == RESULT_OK) {
+                    val data = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        it.data?.getSerializableExtra("userData", Database::class.java) as Database
+                    } else {
+                        it.data?.getSerializableExtra("userData") as Database
+                    }
+
+                    if (data.username != userData.username) {
+                        userData.username = data.username
                     }
                 }
-                for(child in findViewById<LinearLayout>(R.id.CardZone).children.toSet()){
-                    if ( child.findViewById<CheckBox>(R.id.checkBox).tag == data.p_id){
-                        child.findViewById<ProgressBar>(R.id.PbarHorizontal).progress = data.perc_compl.toInt()
-                        child.findViewById<TextView>(R.id.project_name).text = data.p_name
-                    }
-                }
-                Toast.makeText(this, "Project modified", Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(this, "Project not modified", Toast.LENGTH_SHORT).show()
             }
-        }
-        val createContract = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-
-            if(result.resultCode == RESULT_OK){
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-                    userData.user_projects.add(result.data?.getSerializableExtra("newProject", Project::class.java) as Project)
-                }else{
-                    userData.user_projects.add(result.data?.getSerializableExtra("newProject") as Project)
-                }
-
-                if(!addNewProject(userData.user_projects.last(), userData.session_id)){
-                    userData.user_projects.removeLast()
-                }
-                addCards(userData.user_projects.last(),modifyContract, userData.session_id)
-
-            }else{
-                Toast.makeText(this, "Project creation cancelled", Toast.LENGTH_SHORT).show()
-            }
-        }
 
 
         // Check if projects need to be placed
@@ -98,7 +120,7 @@ class HomeActivity : AppCompatActivity() {
             addEmptyCard()
         } else {
             for (projects in userData.user_projects) {
-                addCards(projects, modifyContract,userData.session_id)
+                addCards(projects, modifyContract, userData.session_id)
             }
         }
 
@@ -158,16 +180,26 @@ class HomeActivity : AppCompatActivity() {
             createContract.launch(Intent(this@HomeActivity, CreateProjectActivity::class.java))
         }
 
-
-
+        profileButton.setOnClickListener {
+            profileContract.launch(
+                Intent(
+                    this@HomeActivity,
+                    ModifyProfile::class.java
+                ).putExtra("userData", userData)
+            )
+        }
     }
 
     // Methods of action buttons
-    private fun addCards(project: Project, modifyContract : ActivityResultLauncher<Intent>, session_id: String) {
+    private fun addCards(
+        project: Project,
+        modifyContract: ActivityResultLauncher<Intent>,
+        session_id: String
+    ) {
         val cardZone = findViewById<LinearLayout>(R.id.CardZone)
         val card = LayoutInflater.from(this).inflate(
             R.layout.card_element,
-            cardZone ,
+            cardZone,
             false
         )
 
@@ -177,9 +209,11 @@ class HomeActivity : AppCompatActivity() {
         card.findViewById<CheckBox>(R.id.checkBox).tag = project.p_id
 
         //set listener
-        card.setOnClickListener {
-            val intent = Intent(this@HomeActivity,
-                ModifyProject::class.java)
+        card.findViewById<Button>(R.id.open_button).setOnClickListener {
+            val intent = Intent(
+                this@HomeActivity,
+                ModifyProject::class.java
+            )
             intent.putExtra("projectData", project)
             intent.putExtra("session_id", session_id)
             modifyContract.launch(intent)
@@ -188,7 +222,10 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-    private fun removeCards(database: Database, modifyContract: ActivityResultLauncher<Intent>) : Boolean{
+    private fun removeCards(
+        database: Database,
+        modifyContract: ActivityResultLauncher<Intent>
+    ): Boolean {
         val cardZone = findViewById<LinearLayout>(R.id.CardZone)
         val checkedCards = mutableListOf<String>()
         for (card in cardZone.children.toList()) {
@@ -197,21 +234,25 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        var result = Pair(false,mutableMapOf<String,Boolean>())
+        var result = Pair(false, mutableMapOf<String, Boolean>())
         runBlocking {
             launch {
-                result = deleteProjects(checkedCards,database.session_id, client1)
+                result = deleteProjects(checkedCards, database.session_id, client1)
             }.join()
         }
 
-        if(result.first) {
-            if(result.second.isNotEmpty()){
-                Snackbar.make(findViewById(R.id.background),
-                    "Some projects couldn't be deleted", Snackbar.LENGTH_SHORT)
+        if (result.first) {
+            if (result.second.isNotEmpty()) {
+                Snackbar.make(
+                    findViewById(R.id.background),
+                    "Some projects couldn't be deleted", Snackbar.LENGTH_SHORT
+                )
                     .show()
-            }else{
-                Snackbar.make(findViewById(R.id.background),
-                    "Projects deleted", Snackbar.LENGTH_SHORT)
+            } else {
+                Snackbar.make(
+                    findViewById(R.id.background),
+                    "Projects deleted", Snackbar.LENGTH_SHORT
+                )
                     .show()
             }
             database.user_projects.removeAll(database.user_projects.toSet())
@@ -223,13 +264,15 @@ class HomeActivity : AppCompatActivity() {
                 addEmptyCard()
             } else {
                 for (projects in database.user_projects) {
-                    addCards(projects,modifyContract, database.session_id)
+                    addCards(projects, modifyContract, database.session_id)
                 }
             }
             return true
-        }else{
-            Snackbar.make(findViewById(R.id.background),
-                "There was a problem try again later", Snackbar.LENGTH_SHORT)
+        } else {
+            Snackbar.make(
+                findViewById(R.id.background),
+                "There was a problem try again later", Snackbar.LENGTH_SHORT
+            )
                 .show()
             return false
         }
@@ -281,7 +324,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun retrieveProjects(session_id : String) : Pair<Boolean, ArrayList<Project>>{
+    private fun retrieveProjects(session_id: String): Pair<Boolean, ArrayList<Project>> {
 
         var result = Pair(false, arrayListOf<Project>())
         runBlocking {
@@ -290,10 +333,12 @@ class HomeActivity : AppCompatActivity() {
             }.join()
         }
 
-        return when(result.first) {
+        return when (result.first) {
             false -> {
-                Snackbar.make(findViewById(R.id.background),
-                    "There was a problem try again later", Snackbar.LENGTH_SHORT)
+                Snackbar.make(
+                    findViewById(R.id.background),
+                    "There was a problem try again later", Snackbar.LENGTH_SHORT
+                )
                     .show()
                 Pair(false, arrayListOf())
             }
@@ -309,7 +354,7 @@ class HomeActivity : AppCompatActivity() {
 
         runBlocking {
             launch {
-                result = addAProject( session_id,project, client1)
+                result = addAProject(session_id, project, client1)
             }.join()
         }
 
@@ -319,7 +364,7 @@ class HomeActivity : AppCompatActivity() {
                 "Project added", Snackbar.LENGTH_SHORT
             ).show()
             true
-        }else{
+        } else {
             Snackbar.make(
                 findViewById(R.id.background),
                 "There was a problem try again later", Snackbar.LENGTH_SHORT

@@ -83,10 +83,7 @@ suspend fun logOut(client: HttpClient?): Boolean {
 }
 
 suspend fun registerMe(
-    username: String,
-    password: String,
-    email: String,
-    client: HttpClient?
+    username: String, password: String, email: String, client: HttpClient?
 ): Pair<Int, String> {
 
     @kotlinx.serialization.Serializable
@@ -125,15 +122,17 @@ suspend fun deleteProjects(
         val completed = Json.decodeFromString<CompletedResponse>(response.body())
 
         if (response.status.value == 200) Pair(true, completed.completed_dict) else Pair(
-            false,
-            mutableMapOf()
+            false, mutableMapOf()
         )
     } else {
         Pair(false, mutableMapOf())
     }
 }
 
-suspend fun getProjects(session_id: String,client: HttpClient?): Pair<Boolean,ArrayList<Project>> {
+suspend fun getProjects(
+    session_id: String,
+    client: HttpClient?
+): Pair<Boolean, ArrayList<Project>> {
 
     @kotlinx.serialization.Serializable
     data class ClientSession(val session_id: String)
@@ -141,7 +140,7 @@ suspend fun getProjects(session_id: String,client: HttpClient?): Pair<Boolean,Ar
     @kotlinx.serialization.Serializable
     data class ProjectResponse(val user_projects: ArrayList<Project>)
 
-    val response: HttpResponse = client!!.post("$BACKEND_URL/mobile/get_project"){
+    val response: HttpResponse = client!!.post("$BACKEND_URL/mobile/get_project") {
         contentType(ContentType.Application.Json)
         setBody(ClientSession(session_id))
     }
@@ -156,26 +155,86 @@ suspend fun getProjects(session_id: String,client: HttpClient?): Pair<Boolean,Ar
     }
 }
 
-suspend fun addAProject(session_id: String, newProject: Project, client: HttpClient?): Boolean{
-
-        @kotlinx.serialization.Serializable
-        data class ClientProject(val session_id: String,val new_project: Project)
-
-        val response: HttpResponse = client!!.post("$BACKEND_URL/mobile/add_a_project"){
-            contentType(ContentType.Application.Json)
-            setBody(ClientProject(session_id,newProject))
-        }
-        return response.status.value == 200
-}
-
-suspend fun modifyExsisting(session_id: String,modifiedProject: Project,client: HttpClient?): Boolean{
+suspend fun addAProject(session_id: String, newProject: Project, client: HttpClient?): Boolean {
 
     @kotlinx.serialization.Serializable
-    data class ClientProject(val session_id: String,val modified_project: Project)
+    data class ClientProject(val session_id: String, val new_project: Project)
 
-    val response: HttpResponse = client!!.post("$BACKEND_URL/mobile/modify_existing"){
+    val response: HttpResponse = client!!.post("$BACKEND_URL/mobile/add_a_project") {
         contentType(ContentType.Application.Json)
-        setBody(ClientProject(session_id,modifiedProject))
+        setBody(ClientProject(session_id, newProject))
     }
     return response.status.value == 200
+}
+
+suspend fun modifyExisting(
+    session_id: String,
+    modifiedProject: Project,
+    client: HttpClient?
+): Boolean {
+
+    @kotlinx.serialization.Serializable
+    data class ClientProject(val session_id: String, val modified_project: Project)
+
+    @kotlinx.serialization.Serializable
+    data class ProjectResponse(val status: Boolean)
+
+    val response: HttpResponse = client!!.post("$BACKEND_URL/mobile/modify_project") {
+        contentType(ContentType.Application.Json)
+        setBody(ClientProject(session_id, modifiedProject))
+    }
+    val status = response.body<ProjectResponse>()
+    return response.status.value == 200 && status.status
+}
+
+suspend fun changeDetailsUser(
+    session_id: String,
+    username: String = "",
+    password: String = "",
+    email: String = "",
+    client: HttpClient?
+): Pair<Boolean, Map<String, Boolean>> {
+
+    @kotlinx.serialization.Serializable
+    data class ClientUser(
+        val session_id: String,
+        val username: String = "",
+        val password: String = "",
+        val email: String = ""
+    )
+
+    @kotlinx.serialization.Serializable
+    data class ServerResponse(
+        val email: Boolean = false,
+        val username: Boolean = false,
+        val password: Boolean = false
+    )
+
+    val response: HttpResponse = client!!.post("$BACKEND_URL/mobile/modify_user_details") {
+        contentType(ContentType.Application.Json)
+        setBody(ClientUser(session_id, username, password, email))
+    }
+    val status = response.body<ServerResponse>()
+
+    return if (response.status.value == 200) {
+        var countFalse = 0
+        if (!status.email) countFalse++
+        if (!status.username) countFalse++
+        if (!status.password) countFalse++
+
+        if (countFalse == 3) Pair(
+            false,
+            mapOf("email" to false, "username" to false, "password" to false)
+        )
+        else Pair(
+            true,
+            mapOf(
+                "email" to status.email,
+                "username" to status.username,
+                "password" to status.password
+            )
+        )
+    } else {
+        Pair(false, mapOf("email" to false, "username" to false, "password" to false))
+    }
 }

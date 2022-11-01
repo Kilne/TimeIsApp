@@ -47,7 +47,7 @@ class RegisterActivity : AppCompatActivity() {
             } else {
 
                 runBlocking {
-                    launch{
+                    launch {
                         val (responseCode, responseData) = registerMe(
                             username = usernameField.text.toString(),
                             password = passwordField.text.toString(),
@@ -56,7 +56,11 @@ class RegisterActivity : AppCompatActivity() {
                         )
                         when (responseCode) {
                             200 -> setResult(RESULT_OK, Intent().putExtra("userData", responseData))
-                            400,401,500 -> Snackbar.make(it, "There was a problem try again later", Snackbar.LENGTH_SHORT).show()
+                            400, 401, 500 -> Snackbar.make(
+                                it,
+                                "There was a problem try again later",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
                         }
                         if (responseCode == 200) {
                             registered = true

@@ -26,14 +26,18 @@ class LogInActivity : AppCompatActivity() {
             var isResponseOk = false
             runBlocking {
                 launch {
-                    val (responseCode,responseData) = logMeIn(
+                    val (responseCode, responseData) = logMeIn(
                         findViewById<EditText>(R.id.username_field).text.toString(),
                         findViewById<EditText>(R.id.password_field).text.toString(),
                         client = client1
                     )
                     when (responseCode) {
                         200 -> setResult(RESULT_OK, Intent().putExtra("userData", responseData))
-                        400,401,500 -> Snackbar.make(it, "There was a problem try again later", Snackbar.LENGTH_SHORT).show()
+                        400, 401, 500 -> Snackbar.make(
+                            it,
+                            "There was a problem try again later",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
                     if (responseCode == 200 || responseCode == 204) {
                         isResponseOk = true

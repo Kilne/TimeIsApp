@@ -9,7 +9,6 @@
     <string name="login">Login</string>
     <string name="register_form">REGISTER YOUR ACCOUNT</string>
     <string name="login_form">LOG IN</string>
-    <string name="username">Username</string>
     <string name="send">Send</string>
     <string name="cancel">Cancel</string>
     <string name="home">HOME</string>
@@ -41,4 +40,11 @@
     <string name="project_details">Project Details</string>
     <string name="modify_project">Modify Project</string>
     <string name="progress_bar_details">Progress:</string>
+    <string name="user_place_holder">user_placeholder</string>
+    <string name="change_user">Change Username</string>
+    <string name="username">Username</string>
+    <string name="change_email">Change Email</string>
+    <string name="change_password">Change Password</string>
+    <string name="apply_changes">Apply Changes</string>
+    <string name="discard_changes">Discard Changes</string>
 </resources>
